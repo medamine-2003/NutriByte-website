@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NutriByte – Smart Feeding System</title>
+    <style>
+      /* Global Styles */
+      :root {
+        --primary-green: #146a58;
+        --secondary-green: #205a08;
+        --accent-green: #e0f0e2;
+        --light-bg: #f9f7f3;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --text-gray: #666666;
+        --gradient-primary: linear-gradient(135deg, #146a58, #205a08);
+        --gradient-secondary: linear-gradient(135deg, #205a08, #146a58);
+        --shadow-light: 0 5px 15px rgba(20, 106, 88, 0.1);
+        --shadow-medium: 0 10px 25px rgba(20, 106, 88, 0.2);
+        --shadow-heavy: 0 15px 35px rgba(20, 106, 88, 0.3);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+        background-color: var(--light-bg);
+      }
+
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Navigation */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(249, 247, 243, 0.95);
+        backdrop-filter: blur(20px);
+        padding: 1rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .logo img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        box-shadow: var(--shadow-light);
+        transition: transform 0.3s ease;
+      }
+
+      .logo img:hover {
+        transform: rotate(5deg) scale(1.05);
+      }
+
+      .logo-text {
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: var(--primary-green);
+      }
+
+      .logo-slogan {
+        font-size: 0.8rem;
+        color: var(--text-gray);
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+      }
+
+      .nav-links a {
+        color: var(--text-dark);
+        font-weight: 600;
+        text-decoration: none;
+        position: relative;
+        transition: all 0.3s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+      }
+
+      .nav-links a:hover {
+        background: var(--primary-green);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* Hero Section */
+      .hero {
+        height: 100vh;
+        background: linear-gradient(
+            135deg,
+            rgba(20, 106, 88, 0.9),
+            rgba(32, 90, 8, 0.9)
+          ),
+          url("petsCattle.jpg");
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        padding-top: 80px;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 800px;
+        padding: 0 2rem;
+      }
+
+      .hero-tagline {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        opacity: 0.9;
+        animation: fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .hero h1 {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        font-weight: 800;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.95;
+        line-height: 1.8;
+        animation: fadeInUp 1s ease-out 0.3s both;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .btn {
+        display: inline-block;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 1.2rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.4s ease;
+        box-shadow: var(--shadow-medium);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: var(--shadow-heavy);
+      }
+
+      /* Sections */
+      section {
+        padding: 8rem 5%;
+        position: relative;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 4rem;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-green);
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: var(--gradient-primary);
+        border-radius: 2px;
+      }
+
+      /* About Section */
+      .about {
+        background: var(--light-bg);
+      }
+
+      .about-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .about-text h3 {
+        color: var(--primary-green);
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+
+      .about-text p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-gray);
+        line-height: 1.8;
+      }
+
+      .version-badge {
+        display: inline-flex;
+        align-items: center;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        margin-top: 2rem;
+        box-shadow: var(--shadow-light);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .about-image {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .about-image img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .about-image:hover img {
+        transform: scale(1.1);
+      }
+
+      /* Products Section */
+      .products {
+        background: white;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .product-card {
+        background: white;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: var(--shadow-light);
+        transition: all 0.4s ease;
+        position: relative;
+        border: 1px solid rgba(20, 106, 88, 0.1);
+      }
+
+      .product-card:hover {
+        transform: translateY(-15px);
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .product-image {
+        height: 280px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+      }
+
+      .product-card:hover .product-image img {
+        transform: scale(1.15);
+      }
+
+      .product-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--gradient-primary);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 2;
+      }
+
+      .product-info {
+        padding: 2rem;
+      }
+
+      .product-info h3 {
+        color: var(--primary-green);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+      }
+
+      .product-subtitle {
+        color: var(--text-gray);
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+      }
+
+      .product-features {
+        margin: 1.5rem 0;
+        padding: 0;
+      }
+
+      .product-features li {
+        list-style: none;
+        padding: 0.5rem 0;
+        padding-left: 2rem;
+        position: relative;
+        color: var(--text-gray);
+        font-size: 0.95rem;
+        transition: color 0.3s ease;
+      }
+
+      .product-features li::before {
+        content: "✔️";
+        position: absolute;
+        left: 0;
+        color: var(--primary-green);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .product-features li:hover {
+        color: var(--text-dark);
+      }
+
+      .product-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-green);
+        margin: 1rem 0;
+      }
+
+      /* Services Section */
+      .services {
+        background: var(--light-bg);
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 3rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .service-card {
+        background: white;
+        border-radius: 25px;
+        padding: 2rem;
+        box-shadow: var(--shadow-light);
+        transition: all 0.4s ease;
+        position: relative;
+        border: 1px solid rgba(20, 106, 88, 0.1);
+      }
+
+      .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .service-card h3 {
+        color: var(--primary-green);
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .service-features {
+        margin: 1rem 0;
+        padding: 0;
+      }
+
+      .service-features li {
+        list-style: none;
+        padding: 0.5rem 0;
+        padding-left: 2rem;
+        position: relative;
+        color: var(--text-gray);
+        font-size: 1rem;
+        transition: color 0.3s ease;
+      }
+
+      .service-features li::before {
+        content: "✔️";
+        position: absolute;
+        left: 0;
+        color: var(--primary-green);
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .service-features li:hover {
+        color: var(--text-dark);
+      }
+
+      /* Contact Section */
+      .contact {
+        background: var(--gradient-secondary);
+        color: white;
+      }
+
+      .contact .section-title {
+        color: white;
+      }
+
+      .contact-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .contact-info h3 {
+        color: white;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .contact-info p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .contact-form {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2.5rem;
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+      }
+
+      .form-group {
+        margin-bottom: 2rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: white;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 0 20px rgba(20, 106, 88, 0.3);
+      }
+
+      .form-group textarea {
+        height: 120px;
+        resize: vertical;
+      }
+
+      /* Footer */
+      footer {
+        background: var(--primary-green);
+        color: white;
+        padding: 4rem 5% 2rem;
+        text-align: center;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-logo {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: white;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-links a {
+        color: var(--accent-green);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      .copyright {
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+        }
+
+        .hero-tagline {
+          font-size: 1.2rem;
+        }
+
+        .about-content,
+        .contact-container {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+
+        .products-grid,
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+
+        section {
+          padding: 4rem 5%;
+        }
+
+        .section-title {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav>
+      <div class="logo">
+        <a href="#home"
+          ><img
+            src="Nutrilogo1-removebg-preview.png"
+            alt="NutriByte Logo"
+            style="border-radius: 10px"
+        /></a>
+        <div>
+          <div class="logo-text">NutriByte</div>
+          <div class="logo-slogan">ALWAYS THERE, EVEN WHEN YOU'RE NOT</div>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>NutriByte – Smart Feeding System</h1>
+        <div class="hero-tagline">
+          Because your pet deserves care, even when you're away.
+        </div>
+        <p>
+          NutriByte is an intelligent pet feeding system designed to automate
+          feeding, monitor pet behavior, and ensure the well-being of your furry
+          companion using IoT and AI technologies.
+        </p>
+        <div>
+          <a href="#about" class="btn">Learn More</a>
+          <a href="#products" class="btn" style="margin-left: 1rem"
+            >See our Products</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about">
+      <h2 class="section-title">About Us</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <h3>Meet the Team & Motivation</h3>
+          <p>
+            We are first-year students in Telecommunications Engineering at the
+            National Engineering School of Tunis (ENIT). This project was
+            developed as part of the INJAZ El Arab student competition, which
+            empowers youth entrepreneurship and innovation.
+          </p>
+          <p>
+            Our mission was to design a smart, affordable solution to simplify
+            pet care. NutriByte leverages AI and IoT to automate feeding and
+            monitor pet behavior remotely.
+          </p>
+        </div>
+        <div class="about-image">
+          <img src="teamNutti.jpeg" alt="Team Photo" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+      <h2 class="section-title">Explore Our Solutions</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <img
+              src="feeddetetct.jpg"
+              alt="Pet Feeder with Presence Detection"
+            />
+            <div class="product-badge">🐾 Presence Detection</div>
+          </div>
+          <div class="product-info">
+            <h3>Pet Feeder with Presence Detection</h3>
+            <p class="product-subtitle">
+              Detects when the pet is present near the feeder using a camera and
+              dispenses food automatically.
+            </p>
+            <ul class="product-features">
+              <li>Tested</li>
+              <li>AI-powered</li>
+              <li>Remote access</li>
+            </ul>
+            <div class="product-price">
+              Tech used: ArduCAM, YOLOv8 detection, Servo motor
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image">
+            <img
+              src="manualfeed.png"
+              alt="Smart Pet Feeder with Online Commands"
+            />
+            <div class="product-badge">📶 Online Commands</div>
+          </div>
+          <div class="product-info">
+            <h3>Smart Pet Feeder with Online Commands</h3>
+            <p class="product-subtitle">
+              Control your feeder remotely using a web dashboard or Google
+              Assistant voice command.
+            </p>
+            <ul class="product-features">
+              <li>Tested</li>
+              <li>AI-powered</li>
+              <li>Remote access</li>
+            </ul>
+            <div class="product-price">
+              Tech used: NodeMCU, MQTT, Adafruit IO, IFTTT, Google Assistant
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-image">
+            <img
+              src="supervisionfeed.png"
+              alt="Intelligent Supervision Feeder"
+            />
+            <div class="product-badge">🧠 Intelligent Supervision</div>
+          </div>
+          <div class="product-info">
+            <h3>Intelligent Supervision Feeder</h3>
+            <p class="product-subtitle">
+              Tracks each cat, stores photos, generates feeding reports, and
+              sends email alerts if a cat hasn’t eaten.
+            </p>
+            <ul class="product-features">
+              <li>Tested</li>
+              <li>AI-powered</li>
+              <li>Remote access</li>
+            </ul>
+            <div class="product-price">
+              Tech used: AI image detection, face recognition, email automation,
+              PDF reports
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+      <h2 class="section-title">🌟 Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>🐾 nutriPet</h3>
+          <ul class="service-features">
+            <li>Smart timed feeding 🍽️</li>
+            <li>Smart timed watering 💧</li>
+            <li>Manual remote feeding 📱</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>🐄 nutriCattle</h3>
+          <ul class="service-features">
+            <li>Smart timed feeding 🌾</li>
+            <li>Smart timed watering 🚰</li>
+            <li>Manual remote feeding 🛰️</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <h3>📊 nutriTrack</h3>
+          <ul class="service-features">
+            <li>Smart health and eating habits monitoring 🩺🍽️</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <h2 class="section-title">Get In Touch</h2>
+      <div class="contact-container">
+        <div class="contact-info">
+          <h3>Let's Connect</h3>
+          <p>
+            Have questions about our innovative products or need personalized
+            recommendations? We're here to help!
+          </p>
+          <p><strong>📧 Email:</strong> nutribyte2025@gmail.com</p>
+          <p>
+            <strong>📸 Instagram:</strong>
+            <a
+              href="https://www.instagram.com/_nutribyte_/"
+              target="_blank"
+              style="color: var(--accent-green); text-decoration: underline"
+              >@nutribyte</a
+            >
+          </p>
+        </div>
+        <div class="contact-form">
+          <form>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="Enter your name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="your.email@example.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                placeholder="Tell us about your needs"
+              ></textarea>
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-logo">NutriByte</div>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <p class="copyright">© 2023 NutriByte. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Remove loading overlay when page is loaded
+      window.addEventListener("load", function () {
+        const loadingOverlay = document.getElementById("loadingOverlay");
+        if (loadingOverlay) {
+          loadingOverlay.classList.add("fade-out");
+          setTimeout(() => {
+            loadingOverlay.style.display = "none";
+          }, 500);
+        }
+      });
+    </script>
+  </body>
+</html>
